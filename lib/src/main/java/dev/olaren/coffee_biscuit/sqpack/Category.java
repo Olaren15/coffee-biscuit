@@ -1,33 +1,43 @@
 package dev.olaren.coffee_biscuit.sqpack;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 public enum Category {
-  COMMON((byte) 0x0),
-  BG_COMMON((byte) 0x1),
-  BG((byte) 0x2),
-  CUT((byte) 0x03),
-  CHARA((byte) 0x04),
-  SHADER((byte) 0x05),
-  UI((byte) 0x06),
-  SOUND((byte) 0x07),
-  VFX((byte) 0x08),
-  UI_SCRIPT((byte) 0x09),
-  EXD((byte) 0x0A),
-  GAME_SCRIPT((byte) 0x0B),
-  MUSIC((byte) 0x0C),
-  SQPACK_TEST((byte) 0x12),
-  DEBUG((byte) 0x13);
-
-  private final byte id;
-
-  Category(byte id) {
-    this.id = id;
-  }
+  COMMON,
+  BG_COMMON,
+  BG,
+  CUT,
+  CHARA,
+  SHADER,
+  UI,
+  SOUND,
+  VFX,
+  UI_SCRIPT,
+  EXD,
+  GAME_SCRIPT,
+  MUSIC,
+  SQPACK_TEST,
+  DEBUG;
 
   public static Optional<Category> fromId(byte id) {
-    return Arrays.stream(Category.values()).filter(cat -> cat.id == id).findFirst();
+    return switch (id) {
+      case 0x0 -> Optional.of(COMMON);
+      case 0x1 -> Optional.of(BG_COMMON);
+      case 0x2 -> Optional.of(BG);
+      case 0x3 -> Optional.of(CUT);
+      case 0x4 -> Optional.of(CHARA);
+      case 0x5 -> Optional.of(SHADER);
+      case 0x6 -> Optional.of(UI);
+      case 0x7 -> Optional.of(SOUND);
+      case 0x8 -> Optional.of(VFX);
+      case 0x9 -> Optional.of(UI_SCRIPT);
+      case 0xA -> Optional.of(EXD);
+      case 0xB -> Optional.of(GAME_SCRIPT);
+      case 0xC -> Optional.of(MUSIC);
+      case 0x12 -> Optional.of(SQPACK_TEST);
+      case 0x13 -> Optional.of(DEBUG);
+      default -> Optional.empty();
+    };
   }
 
   public static Optional<Category> fromName(String name) {

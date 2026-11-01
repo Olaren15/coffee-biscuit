@@ -1,4 +1,4 @@
-package dev.olaren.coffee_biscuit.sqpack;
+package dev.olaren.coffee_biscuit.sqpack.data_types;
 
 import static java.lang.foreign.MemoryLayout.PathElement.groupElement;
 

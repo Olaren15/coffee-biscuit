@@ -1,4 +1,4 @@
-package dev.olaren.coffee_biscuit.sqpack;
+package dev.olaren.coffee_biscuit.sqpack.data_types;
 
 import static java.lang.foreign.MemoryLayout.PathElement.groupElement;
 
@@ -7,7 +7,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.VarHandle;
 
-public record Index2HashTableEntry(long hash, boolean isSynonym, byte dataFileId, long offset) {
+public record Index2HashTableEntry(long hash, long data) {
   public static final MemoryLayout LAYOUT =
       MemoryLayout.structLayout(
               ValueLayout.JAVA_INT.withName("hash"), ValueLayout.JAVA_INT.withName("data"))
@@ -20,7 +20,6 @@ public record Index2HashTableEntry(long hash, boolean isSynonym, byte dataFileId
     long hash = Integer.toUnsignedLong((int) HASH.get(buffer, baseOffset));
     long data = Integer.toUnsignedLong((int) DATA.get(buffer, baseOffset));
 
-    return new Index2HashTableEntry(
-        hash, (data & 0xb1) == 0xb1, (byte) ((data & 0b1110) >> 1), (data & ~0xF) * 0x08);
+    return new Index2HashTableEntry(hash, data);
   }
 }

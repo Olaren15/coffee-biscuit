@@ -1,4 +1,4 @@
-package dev.olaren.coffee_biscuit.sqpack;
+package dev.olaren.coffee_biscuit.sqpack.data_types;
 
 import static java.lang.foreign.MemoryLayout.PathElement.groupElement;
 import static java.lang.foreign.MemoryLayout.PathElement.sequenceElement;
@@ -8,8 +8,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.VarHandle;
 
-public record SqPackHeader(
-    byte[] magic, PlatformId platformId, long size, long version, long type) {
+public record SqPackHeader(byte[] magic, Platform platform, long size, long version, long type) {
   private static final int MAGIC_LENGTH = 8;
 
   public static final MemoryLayout LAYOUT =
@@ -34,9 +33,17 @@ public record SqPackHeader(
       magic[i] = (byte) MAGIC.get(buffer, baseOffset, (long) i);
     }
 
+    byte platformId = (byte) PLATFORM_ID.get(buffer, baseOffset);
+    var patform =
+        Platform.fromId(platformId)
+            .orElseThrow(
+                () ->
+                    new UnsupportedOperationException(
+                        "Unknown platform id %d".formatted(platformId)));
+
     return new SqPackHeader(
         magic,
-        PlatformId.fromByte((byte) PLATFORM_ID.get(buffer, baseOffset)),
+        patform,
         Integer.toUnsignedLong((int) SIZE.get(buffer, baseOffset)),
         Integer.toUnsignedLong((int) VERSION.get(buffer, baseOffset)),
         Integer.toUnsignedLong((int) TYPE.get(buffer, baseOffset)));
