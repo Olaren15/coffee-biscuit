@@ -4,5 +4,5 @@ import java.lang.foreign.MemorySegment;
 
 @FunctionalInterface
 public interface SqPackFileParser<T> {
-  T fromBytes(MemorySegment data);
+  T fromBytes(MemorySegment data) throws InvalidFormatException;
 }

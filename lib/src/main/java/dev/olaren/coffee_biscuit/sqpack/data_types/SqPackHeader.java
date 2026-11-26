@@ -1,7 +1,6 @@
 package dev.olaren.coffee_biscuit.sqpack.data_types;
 
 import static java.lang.foreign.MemoryLayout.PathElement.groupElement;
-import static java.lang.foreign.MemoryLayout.PathElement.sequenceElement;
 
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
@@ -21,17 +20,14 @@ public record SqPackHeader(byte[] magic, Platform platform, long size, long vers
               ValueLayout.JAVA_INT.withName("type"))
           .withName("SqPackHeader");
 
-  private static final VarHandle MAGIC = LAYOUT.varHandle(groupElement("magic"), sequenceElement());
+  private static final long MAGIC_OFFSET = LAYOUT.byteOffset(groupElement("magic"));
   private static final VarHandle PLATFORM_ID = LAYOUT.varHandle(groupElement("platformId"));
   private static final VarHandle SIZE = LAYOUT.varHandle(groupElement("size"));
   private static final VarHandle VERSION = LAYOUT.varHandle(groupElement("version"));
   private static final VarHandle TYPE = LAYOUT.varHandle(groupElement("type"));
 
   public static SqPackHeader fromBytes(MemorySegment buffer, long baseOffset) {
-    var magic = new byte[8];
-    for (int i = 0; i < MAGIC_LENGTH; i++) {
-      magic[i] = (byte) MAGIC.get(buffer, baseOffset, (long) i);
-    }
+    byte[] magic = buffer.asSlice(MAGIC_OFFSET, MAGIC_LENGTH).toArray(ValueLayout.JAVA_BYTE);
 
     byte platformId = (byte) PLATFORM_ID.get(buffer, baseOffset);
     var patform =

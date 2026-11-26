@@ -39,7 +39,7 @@ public record SqPackPath(Category category, String repositoryName, long index2Ha
     CRC32 index2Hash = new CRC32();
     byte[] lowerBytes = path.toLowerCase(Locale.ROOT).getBytes(StandardCharsets.UTF_8);
     index2Hash.update(lowerBytes);
-    long computedHash = (int) ~index2Hash.getValue(); // ?????
+    long computedHash = Integer.toUnsignedLong((int) ~index2Hash.getValue()); // ?????
 
     return new SqPackPath(category, repositoryName, computedHash, path);
   }

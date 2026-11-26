@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation("org.jspecify:jspecify:1.0.0")
     implementation(project(":lib"))
+    implementation(project(":excel"))
 }
 
 tasks.test {

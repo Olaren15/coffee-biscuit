@@ -11,7 +11,7 @@ A Java library to read Final Fanatasy XIV's game data.
 ## Features / Roadmap
 
 - [x] Reading raw SqPack files
-- [ ] Reading Excel sheets
+- [x] Reading Excel sheets ⚠️ only Orchestion sheet tested
 - [ ] Reading common SqPack file types
 
 ## Philosophy

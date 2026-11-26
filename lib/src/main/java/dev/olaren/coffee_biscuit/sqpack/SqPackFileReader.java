@@ -20,7 +20,7 @@ public class SqPackFileReader {
 
     var blockInfos =
         SqPackStandardFileBlocksInfos.fromBytes(
-            readBuf, baseOffset + SqPackFileInfo.LAYOUT.byteSize(), fileInfo.blockCount());
+            readBuf, baseOffset + SqPackFileInfo.LAYOUT.byteSize(), (int) fileInfo.blockCount());
 
     try (Arena arena = Arena.ofConfined()) {
       MemorySegment writeBuf = arena.allocate(fileInfo.decompressedSize());
